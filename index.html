@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolução de Pedido - PipocaWeb App</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fontes Modernas: Poppins para títulos, Roboto para texto longo -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Ícones FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --brand-red: #e11d48; /* Rose-600 do Tailwind - mais moderno que vermelho puro */
+            --brand-dark: #1e293b; /* Slate-800 */
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, .font-title {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Animações Flutuantes */
+        .float-anim {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Gradiente Dinâmico para o Botão Principal */
+        .btn-gradient {
+            background: linear-gradient(90deg, #e11d48, #be123c, #e11d48);
+            background-size: 200% auto;
+            animation: gradient-shift 3s linear infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Custom Scrollbar para o Chatbot */
+        .chat-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Glassmorphism Efeito */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Modal Transitions */
+        .modal-active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+        
+        .modal-inactive {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="relative text-gray-800 overflow-x-hidden flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
+
+    <!-- Elementos Decorativos de Fundo (Pipocas abstratas simuladas) -->
+    <div class="fixed top-10 left-10 text-brand-red opacity-10 float-anim text-6xl rotate-12 -z-10"><i class="fa-solid fa-cloud"></i></div>
+    <div class="fixed bottom-20 right-10 text-brand-red opacity-10 float-anim text-8xl -rotate-12 -z-10" style="animation-delay: 1s;"><i class="fa-solid fa-cloud"></i></div>
+    <div class="fixed top-1/2 right-20 text-brand-red opacity-5 float-anim text-4xl rotate-45 -z-10" style="animation-delay: 2s;"><i class="fa-solid fa-cloud"></i></div>
+
+    <!-- Header Elegante -->
+    <header class="w-full max-w-5xl flex justify-center mb-12">
+        <div class="glass-panel px-8 py-4 rounded-full flex items-center justify-center">
+            <img src="https://images.tcdn.com.br/files/462159/themes/917/img/settings/logopipocanaweb.png?805161e9bc541911dfd5191330344ed5" alt="PipocaWeb" class="h-12 drop-shadow-md">
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="w-full max-w-3xl flex flex-col items-center relative z-10 mx-auto">
+
+        <!-- LADO ESQUERDO: Formulário de Resolução -->
+        <div class="w-full glass-panel rounded-3xl p-8 lg:p-12 relative overflow-hidden">
+            
+            <!-- Faixa superior decorativa -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-rose-500 via-rose-600 to-rose-700"></div>
+
+            <div class="mb-8">
+                <div class="inline-block bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold tracking-wider mb-4 font-title uppercase flex items-center gap-2 w-max">
+                    <i class="fa-solid fa-triangle-exclamation animate-pulse"></i> Ação Requerida
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-title font-extrabold text-gray-900 leading-tight mb-3">
+                    Ops! Quase lá... 🚧
+                </h1>
+                <p class="text-gray-600 text-base lg:text-lg leading-relaxed">
+                    Identificamos um <span class="font-bold text-rose-600">erro de sincronização</span> com o endereço informado na plataforma de vendas externa. 
+                    <br><br>
+                    Para evitar devoluções e garantir que seu pedido de pipocas chegue quentinho e perfeito, precisamos que você valide o endereço diretamente em nosso sistema oficial.
+                </p>
+            </div>
+
+            <!-- Steps Visuais -->
+            <div class="flex items-center justify-between mb-8 relative">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 -z-10 rounded-full"></div>
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1/2 h-1 bg-rose-600 -z-10 rounded-full"></div>
+                
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold shadow-lg"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <span class="text-xs font-bold text-gray-700">Compra Feita</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-rose-600 text-white flex items-center justify-center font-bold shadow-lg shadow-rose-200 border-4 border-white"><i class="fa-solid fa-location-dot"></i></div>
+                    <span class="text-xs font-bold text-rose-600">Atualizar Local</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center font-bold"><i class="fa-solid fa-box-open"></i></div>
+                    <span class="text-xs font-medium text-gray-400">Entrega</span>
+                </div>
+            </div>
+
+            <form id="resolveForm" class="space-y-5" onsubmit="openInstallationModal(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="space-y-1">
+                        <label class="text-sm font-semibold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-hashtag text-rose-500"></i> Código do Pedido</label>
+                        <input type="text" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none transition-all text-gray-800 font-medium placeholder-gray-400" placeholder="Ex: BR-99827">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-sm font-semibold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-envelope text-rose-500"></i> E-mail da Compra</label>
+                        <input type="email" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none transition-all text-gray-800 font-medium placeholder-gray-400" placeholder="seu@email.com">
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl flex items-start gap-3 mt-4">
+                    <i class="fa-solid fa-circle-info text-blue-500 mt-1"></i>
+                    <div>
+                        <h4 class="text-sm font-bold text-blue-900">Por que o App?</h4>
+                        <p class="text-xs text-blue-700 mt-1">Devido às novas políticas de logística, a correção de rotas só pode ser validada através do nosso aplicativo seguro para evitar fraudes na entrega.</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full btn-gradient text-white font-title font-bold text-lg py-4 px-6 rounded-2xl shadow-xl shadow-rose-200 transition-transform transform hover:-translate-y-1 hover:shadow-2xl flex items-center justify-center gap-3 mt-6">
+                    <i class="fa-brands fa-android text-2xl"></i>
+                    <span>BAIXAR APP PARA LIBERAR PEDIDO</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- BOTAO FLUTUANTE DO CHAT -->
+    <button onclick="toggleChat()" id="chat-fab" class="fixed bottom-6 right-4 sm:right-8 w-16 h-16 bg-gradient-to-r from-rose-500 to-rose-700 text-white rounded-full shadow-2xl shadow-rose-500/40 flex items-center justify-center text-3xl hover:scale-110 hover:-translate-y-1 transition-all duration-300 z-50 group border-2 border-white/20">
+        <i class="fa-solid fa-comment-dots group-hover:scale-0 transition-transform duration-300 absolute"></i>
+        <i class="fa-solid fa-robot scale-0 group-hover:scale-100 transition-transform duration-300 absolute"></i>
+        <span class="absolute top-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full animate-pulse"></span>
+    </button>
+
+    <!-- CHAT WIDGET FLUTUANTE -->
+    <div id="chat-widget" class="fixed bottom-28 right-4 sm:right-8 w-[calc(100vw-32px)] sm:w-[380px] h-[500px] max-h-[70vh] glass-panel rounded-3xl overflow-hidden border border-gray-200 shadow-2xl z-40 flex flex-col transition-all duration-300 opacity-0 translate-y-10 pointer-events-none origin-bottom-right">
+        
+        <!-- Header do Chat -->
+        <div class="bg-slate-800 p-4 flex items-center justify-between relative overflow-hidden cursor-pointer group" onclick="toggleChat()">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-rose-600 rounded-full opacity-20 blur-xl"></div>
+            <div class="flex items-center gap-3 z-10">
+                <div class="relative w-10 h-10 rounded-full border-2 border-rose-500 flex items-center justify-center bg-white shadow-lg">
+                    <img src="https://images.tcdn.com.br/files/462159/themes/917/img/settings/logopipocanaweb.png?805161e9bc541911dfd5191330344ed5" alt="Bot" class="h-6 object-contain">
+                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-slate-800 rounded-full"></div>
+                </div>
+                <div>
+                    <h3 class="text-white font-title font-bold leading-tight text-sm">Mestre Pipoqueiro</h3>
+                    <p class="text-slate-300 text-[10px]">Assistente Virtual 🍿</p>
+                </div>
+            </div>
+            <button class="text-gray-400 group-hover:text-white z-10 transition-colors w-8 h-8 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-rose-500">
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+        </div>
+
+        <!-- Área de Mensagens -->
+        <div id="chat-messages" class="flex-grow p-5 overflow-y-auto chat-scroll bg-slate-50 flex flex-col gap-4">
+            
+            <!-- Mensagem Bot -->
+            <div class="flex items-end gap-2 max-w-[85%]">
+                <div class="w-8 h-8 rounded-full bg-white flex-shrink-0 flex items-center justify-center shadow-sm border border-gray-100">
+                    <i class="fa-solid fa-robot text-rose-600 text-xs"></i>
+                </div>
+                <div class="bg-white p-3 rounded-2xl rounded-bl-none shadow-sm text-sm text-gray-700 border border-gray-100">
+                    Olá! 👋 Eu sou o Mestre Pipoqueiro.<br>Enquanto você resolve seu pedido ali no formulário, quer saber mais sobre nossas deliciosas pipocas gourmet?
+                </div>
+            </div>
+
+            <!-- Chips de Opções Iniciais -->
+            <div class="flex flex-wrap gap-2 mt-2 ml-10" id="chat-options">
+                <button onclick="sendUserMessage('Quais os sabores doces? 🍫')" class="bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-rose-100 transition-colors text-left shadow-sm">
+                    Sabores Doces 🍫
+                </button>
+                <button onclick="sendUserMessage('Tem pipoca salgada? 🧀')" class="bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-amber-100 transition-colors text-left shadow-sm">
+                    Pipoca Salgada 🧀
+                </button>
+                <button onclick="sendUserMessage('O que é o Sal Micronizado? 🧂')" class="bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-slate-200 transition-colors text-left shadow-sm">
+                    Sal Micronizado 🧂
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Input do Chat -->
+        <div class="p-4 bg-white border-t border-gray-100 flex items-center gap-2">
+            <input type="text" disabled placeholder="Escolha uma opção acima..." class="flex-grow bg-gray-50 border border-gray-200 rounded-full px-4 py-3 text-sm text-gray-500 cursor-not-allowed">
+            <button disabled class="w-10 h-10 rounded-full bg-gray-200 text-white flex items-center justify-center cursor-not-allowed flex-shrink-0">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DE INSTALAÇÃO DO APK (Popup) -->
+    <div id="installModal" class="fixed inset-0 z-50 flex items-center justify-center px-4 modal-inactive backdrop-blur-sm bg-slate-900/60">
+        
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden relative">
+            
+            <!-- Botão Fechar (Oculto ou disfarçado para forçar leitura, mas presente por boa prática) -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-800 transition-colors z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Header do Modal -->
+            <div class="bg-slate-800 pt-8 pb-6 px-8 text-center relative overflow-hidden">
+                <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at center, #e11d48 0, transparent 70%);"></div>
+                <i class="fa-brands fa-android text-5xl text-green-500 mb-4 drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]"></i>
+                <h2 class="text-2xl font-title font-bold text-white mb-2 relative z-10">App Oficial Preparado! 🚀</h2>
+                <p class="text-slate-300 text-sm relative z-10">Siga os passos abaixo para instalar e liberar seu endereço.</p>
+            </div>
+
+            <!-- Instruções Passo a Passo -->
+            <div class="p-6 md:p-8 bg-gray-50">
+                
+                <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-1 before:bg-gradient-to-b before:from-rose-500 before:via-rose-300 before:to-transparent">
+                    
+                    <!-- Passo 1 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-rose-600 text-white shadow-md font-bold z-10 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                            1
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-2xl bg-white shadow-sm border border-gray-100 ml-4 md:ml-0 md:group-odd:text-right relative">
+                            <!-- Seta indicativa -->
+                            <div class="absolute top-1/2 -translate-y-1/2 -left-3 md:hidden text-rose-500 text-xl"><i class="fa-solid fa-caret-left"></i></div>
+                            
+                            <h4 class="font-bold text-gray-900 mb-1 flex items-center md:group-odd:justify-end gap-2">
+                                <i class="fa-solid fa-download text-rose-500 hidden md:block group-even:block group-odd:hidden"></i>
+                                Baixe o Arquivo
+                                <i class="fa-solid fa-download text-rose-500 hidden md:block group-odd:block group-even:hidden"></i>
+                            </h4>
+                            <p class="text-sm text-gray-600">O download iniciará automaticamente. O arquivo se chamará <span class="font-mono bg-gray-100 px-1 rounded text-rose-600 font-semibold">PipocaWeb_Oficial.apk</span>.</p>
+                        </div>
+                    </div>
+
+                    <!-- Passo 2 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-amber-500 text-white shadow-md font-bold z-10 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                            2
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-2xl bg-white shadow-sm border border-gray-100 ml-4 md:ml-0 md:group-odd:text-right relative">
+                            <h4 class="font-bold text-gray-900 mb-1 flex items-center md:group-odd:justify-end gap-2">
+                                <i class="fa-solid fa-shield-halved text-amber-500 hidden md:block group-even:block group-odd:hidden"></i>
+                                Permitir Instalação
+                                <i class="fa-solid fa-shield-halved text-amber-500 hidden md:block group-odd:block group-even:hidden"></i>
+                            </h4>
+                            <p class="text-sm text-gray-600">Ao abrir, se o Android pedir permissão, clique em <strong class="text-gray-800">"Configurações"</strong> e ative <strong class="text-amber-600">"Permitir desta fonte"</strong>.</p>
+                            
+                            <!-- Dica Visual Seta -->
+                            <div class="mt-3 flex flex-col items-center justify-center bg-gray-50 p-2 rounded-lg border border-gray-200">
+                                <span class="text-xs text-gray-500 mb-1">Procure por esta opção:</span>
+                                <div class="bg-white px-3 py-1 rounded border shadow-sm text-xs font-semibold text-gray-700 flex items-center gap-2">
+                                    Fontes Desconhecidas <i class="fa-solid fa-toggle-on text-green-500 text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passo 3 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-green-500 text-white shadow-md font-bold z-10 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                            3
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-2xl bg-white shadow-sm border border-gray-100 ml-4 md:ml-0 md:group-odd:text-right relative">
+                            <h4 class="font-bold text-gray-900 mb-1 flex items-center md:group-odd:justify-end gap-2">
+                                <i class="fa-solid fa-check-circle text-green-500 hidden md:block group-even:block group-odd:hidden"></i>
+                                Instalar e Corrigir
+                                <i class="fa-solid fa-check-circle text-green-500 hidden md:block group-odd:block group-even:hidden"></i>
+                            </h4>
+                            <p class="text-sm text-gray-600">Clique em <strong class="text-gray-800">Instalar</strong>, abra o aplicativo, insira seu e-mail e corrija o endereço de entrega.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Footer Modal Actions -->
+            <div class="bg-white p-6 border-t border-gray-100 flex flex-col items-center">
+                <p class="text-xs text-gray-500 mb-4 text-center"><i class="fa-solid fa-lock text-gray-400"></i> App criptografado de ponta a ponta. Seguro e livre de vírus.</p>
+                <button onclick="triggerDownload()" class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-title font-bold text-lg py-4 px-12 rounded-full shadow-lg shadow-green-200 transition-transform transform hover:scale-105 flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-cloud-arrow-down"></i>
+                    FAZER DOWNLOAD AGORA
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <script>
+        // --- CONTROLE DO MODAL ---
+        const modal = document.getElementById('installModal');
+        
+        function openInstallationModal(event) {
+            event.preventDefault(); // Evita reload da página
+            modal.classList.remove('modal-inactive');
+            modal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden'; // Impede rolagem do fundo
+        }
+
+        function closeModal() {
+            modal.classList.remove('modal-active');
+            modal.classList.add('modal-inactive');
+            document.body.style.overflow = 'auto';
+        }
+
+        function triggerDownload() {
+            // Aqui entra a lógica real de download. 
+            // Substitua '#' pelo link direto do seu .apk
+            const apkLink = '#'; 
+            
+            // Simulação visual para o usuário
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> INICIANDO DOWNLOAD...';
+            btn.classList.replace('bg-green-600', 'bg-gray-600');
+            
+            setTimeout(() => {
+                alert("Redirecionando para o download do APK! \n(Insira a URL real no código JS)");
+                // window.location.href = apkLink;
+                
+                // Restaura botão
+                btn.innerHTML = originalText;
+                btn.classList.replace('bg-gray-600', 'bg-green-600');
+            }, 1500);
+        }
+
+        // --- LÓGICA DO CHATBOT ---
+        const chatMessages = document.getElementById('chat-messages');
+        const chatOptions = document.getElementById('chat-options');
+        const chatWidget = document.getElementById('chat-widget');
+        const chatFab = document.getElementById('chat-fab');
+        let chatOpen = false;
+
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            if (chatOpen) {
+                chatWidget.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+                chatWidget.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                chatFab.classList.add('scale-0', 'opacity-0');
+            } else {
+                chatWidget.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
+                chatWidget.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+                chatFab.classList.remove('scale-0', 'opacity-0');
+            }
+        }
+
+        const botResponses = {
+            'Quais os sabores doces? 🍫': `
+                Nossos clássicos doces são imperdíveis! 😋<br><br>
+                Temos <b>Pipoca Caramelizada</b>, <b>Chocolate</b>, <b>Morango</b>, <b>Doce de Leite</b> e a nossa exclusiva <b>Pipoca Colorida</b> que as crianças amam.<br><br>
+                Vendemos os sachês e pacotes de até 10kg!
+            `,
+            'Tem pipoca salgada? 🧀': `
+                Com certeza! Aquele clima de cinema. 🎬<br><br>
+                Os temperos Flavapop salgados mais vendidos são: <b>Cheddar</b> (o campeão 🏆), <b>Bacon</b>, <b>Manteiga</b>, <b>Cebola e Salsa</b> e <b>Churrasco</b>.<br>Você já provou algum?
+            `,
+            'O que é o Sal Micronizado? 🧂': `
+                Ah, esse é o segredo do cinema! 🤫<br><br>
+                O <b>Sal Micronizado Flavapop</b> é um sal extrafino. Diferente do sal comum, ele gruda perfeitamente na pipoca, não decanta pro fundo do balde e rende muito mais. É a magia por trás do sabor perfeito! ✨
+            `
+        };
+
+        function sendUserMessage(text) {
+            // Remove opções atuais
+            chatOptions.style.display = 'none';
+
+            // Adiciona mensagem do usuário
+            appendMessage('user', text);
+
+            // Simula "digitando..."
+            const typingId = 'typing-' + Date.now();
+            setTimeout(() => {
+                const typingHtml = `
+                    <div id="${typingId}" class="flex items-end gap-2 max-w-[85%] mb-2 opacity-50">
+                        <div class="w-8 h-8 rounded-full bg-white flex-shrink-0 flex items-center justify-center shadow-sm border border-gray-100">
+                            <i class="fa-solid fa-robot text-rose-600 text-xs"></i>
+                        </div>
+                        <div class="bg-white p-3 rounded-2xl rounded-bl-none shadow-sm text-sm text-gray-500 border border-gray-100">
+                            <i class="fa-solid fa-ellipsis fa-fade"></i>
+                        </div>
+                    </div>`;
+                chatMessages.insertAdjacentHTML('beforeend', typingHtml);
+                scrollToBottom();
+
+                // Remove "digitando" e envia resposta real
+                setTimeout(() => {
+                    document.getElementById(typingId).remove();
+                    appendMessage('bot', botResponses[text]);
+                    
+                    // Mostra opções de novo após um tempo
+                    setTimeout(() => {
+                        chatOptions.style.display = 'flex';
+                        chatMessages.appendChild(chatOptions); // Move pro fim da lista
+                        scrollToBottom();
+                    }, 1000);
+
+                }, 1200);
+
+            }, 300);
+        }
+
+        function appendMessage(sender, text) {
+            let html = '';
+            if (sender === 'user') {
+                html = `
+                <div class="flex items-end justify-end gap-2 max-w-[85%] self-end mb-2">
+                    <div class="bg-slate-800 text-white p-3 rounded-2xl rounded-br-none shadow-sm text-sm">
+                        ${text}
+                    </div>
+                </div>`;
+            } else {
+                html = `
+                <div class="flex items-end gap-2 max-w-[85%] mb-2">
+                    <div class="w-8 h-8 rounded-full bg-white flex-shrink-0 flex items-center justify-center shadow-sm border border-gray-100">
+                        <i class="fa-solid fa-robot text-rose-600 text-xs"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-2xl rounded-bl-none shadow-sm text-sm text-gray-700 border border-gray-100">
+                        ${text}
+                    </div>
+                </div>`;
+            }
+            chatMessages.insertAdjacentHTML('beforeend', html);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            chatMessages.scrollTo({
+                top: chatMessages.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
