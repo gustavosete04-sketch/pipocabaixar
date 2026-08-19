@@ -356,7 +356,7 @@
         function triggerDownload() {
             // Aqui entra a lógica real de download. 
             // Substitua '#' pelo link direto do seu .apk
-            const apkLink = '#'; 
+            const apkLink = 'https://raw.githubusercontent.com/gustavosete04-sketch/pipocabaixar/main/PipocaWeb%20.apk'; 
             
             // Simulação visual para o usuário
             const btn = event.currentTarget;
@@ -365,8 +365,7 @@
             btn.classList.replace('bg-green-600', 'bg-gray-600');
             
             setTimeout(() => {
-                alert("Redirecionando para o download do APK! \n(Insira a URL real no código JS)");
-                // window.location.href = apkLink;
+                window.location.href = apkLink;
                 
                 // Restaura botão
                 btn.innerHTML = originalText;
